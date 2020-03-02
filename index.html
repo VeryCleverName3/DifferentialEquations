@@ -8,7 +8,7 @@
         }
 
         canvas{
-            border: 5px black solid;
+            border-right: 5px black solid;
         }
 
         .block{
@@ -21,7 +21,7 @@
     <canvas id="canvas"></canvas>
     <div class="block">
         <input type="checkbox" onclick="toggleColor()">No Color<br>
-        <input type="checkbox" onclick="toggleOldMode()">Better Move Mode<br>
+        <input type="checkbox" onclick="toggleOldMode()">Old Move Mode<br>
         <input type="checkbox" onclick="toggleParticles()">Particles<br>
         <input type="text" oninput="diffEQ = this.value; ctx.clearRect(0, 0, s, s); points = [];" value="(x)-(y)">=dy/dx<br>
         <input type="button" value="Fill! (laggy)" onclick="fill()">

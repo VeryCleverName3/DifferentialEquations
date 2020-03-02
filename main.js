@@ -30,10 +30,16 @@ var mx;
 
 var my;
 
-function getXAndY(s, dir){
+function getXAndY(s, point, lastSlope){
     var ans = {x: 0, y: 0};
-    ans.y = dir * Math.sqrt(speed / ((1/(s*s))+1));
+
+    if(((s > 0 && s < 1) && (lastSlope < 0 && lastSlope > -1)) || ((s < 0 && s > -1) && (lastSlope > 0 && lastSlope < 1))){
+        point.dir *= -1;
+    }
+
+    ans.y = point.dir * Math.sqrt(speed / ((1/(s*s))+1));
     ans.x = ans.y / s;
+
     return ans;
 }
 
@@ -42,12 +48,6 @@ function update(){
     for(var i = 0; i < points.length; i++){
         var slope = eval(keepReplacing(keepReplacing(diffEQ, "x", points[i].x), "y", points[i].y));
         var brightnessAdd = 0;
-        if(Math.abs(slope * 30) > 360){
-            brightnessAdd = Math.abs((slope * 100)) - 360;
-        }
-        if(brightnessAdd > 50){
-            brightnessAdd = 50;
-        }
 
         //console.log(brightnessAdd);
         ctx.fillStyle = "hsl("+ (slope * 30) + ", 100%, " + (50) + "%)";
@@ -62,10 +62,12 @@ function update(){
             points[i].x += speed;
             points[i].y += slope * speed;
         } else {
-            var vector = getXAndY(slope, points[i].dir);
+            var vector = getXAndY(slope, points[i], points[i].lastSlope);
             points[i].x += vector.x;
             points[i].y += vector.y;
         }
+
+        points[i].lastSlope = slope;
         
         if((oldMode && points[i].x > size) ||(!oldMode && (points[i].x > size || points[i].x < -size || points[i].y > size || points[i].y < -size))){
             points.splice(i, 1);
@@ -74,8 +76,8 @@ function update(){
 }
 
 function addPoint(x, y){
-    points.push({x:x, y:y, dir: 1});
-    points.push({x:x, y:y, dir: -1})
+    points.push({x:x, y:y, dir: 1, lastSlope: NaN});
+    points.push({x:x, y:y, dir: -1, lastSlope: NaN})
 }
 
 onmousedown = (e)=>{
