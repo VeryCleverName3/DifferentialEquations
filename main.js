@@ -122,6 +122,8 @@ function keepReplacing(a, b, c){
 }
 
 function fill(){
+    fillX = -1;
+    fillY = -1;
     while(fillOnce()){}
     update();
     points = [];
