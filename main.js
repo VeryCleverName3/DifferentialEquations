@@ -49,8 +49,12 @@ function update(){
         var slope = eval(keepReplacing(keepReplacing(diffEQ, "x", points[i].x), "y", points[i].y));
         var brightnessAdd = 0;
 
+        var vector = getXAndY(slope, points[i], points[i].lastSlope);
+
+        angle = Math.atan2(vector.y, vector.x) * 360 / Math.PI;
+
         //console.log(brightnessAdd);
-        ctx.fillStyle = "hsl("+ (slope * 30) + ", 100%, " + (50) + "%)";
+        ctx.fillStyle = "hsl("+ angle + ", 100%, " + (50) + "%)";
         if(!color){
             ctx.fillStyle = "black";
         }
@@ -62,7 +66,6 @@ function update(){
             points[i].x += speed;
             points[i].y += slope * speed;
         } else {
-            var vector = getXAndY(slope, points[i], points[i].lastSlope);
             points[i].x += vector.x;
             points[i].y += vector.y;
         }
