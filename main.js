@@ -16,7 +16,7 @@ var s = c.height = c.width = scale * window.innerHeight;
 
 var ctx = c.getContext("2d");
 
-var diffEQ = "(x)-(y)";
+var diffEQ = "-x/y";
 
 var size = 10;
 
@@ -46,7 +46,13 @@ function getXAndY(s, point, lastSlope){
 function update(){
     if(particles) ctx.clearRect(0, 0, c.height, c.height);
     for(var i = 0; i < points.length; i++){
-        var slope = eval(keepReplacing(keepReplacing(diffEQ, "x", points[i].x), "y", points[i].y));
+
+        var x = points[i].x;
+        var y = points[i].y;
+        var slope;
+        with(Math){
+            slope = eval(diffEQ);
+        }
         var brightnessAdd = 0;
 
         var vector = getXAndY(slope, points[i], points[i].lastSlope);
